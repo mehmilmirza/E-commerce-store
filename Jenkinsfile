@@ -38,6 +38,22 @@ pipeline {
                 }
             }
         }
+        stage('Run Selenium Tests') {
+            agent {
+                docker {
+                    image 'python:3.9'
+                }
+            }
+            steps {
+                sh '''
+                pip install selenium
+                wget -N https://chromedriver.storage.googleapis.com/91.0.4472.19/chromedriver_linux64.zip
+                unzip chromedriver_linux64.zip
+                mv chromedriver /usr/local/bin/
+                python test.py
+                '''
+            }
+        }
     }
     post {
         always {
